@@ -6,45 +6,49 @@ Enterprise-grade Girl Scout cookie storefront for Leigha.
 
 This site is hosted on GitHub Pages and uses a custom domain: **leighagrace.com**
 
-## Updating Cookie Sales
+## Admin Dashboard 🔒
 
-To update Leigha's cookie count:
+**No more editing code!** Update everything through the admin dashboard.
 
-1. Open `index.html`
-2. Find this section near line 518:
+### How to Access Admin Panel
 
-```javascript
-const CONFIG = {
-    cookiesSold: 0,      // ← UPDATE THIS NUMBER!
-    cookiesGoal: 300     // ← UPDATE IF GOAL CHANGES
-};
-```
+1. Go to **leighagrace.com**
+2. Scroll to the bottom footer
+3. Click the green heart (💚) **5 times** quickly
+4. You'll be redirected to the login page
+5. Enter credentials:
+   - **Username:** `aaron`
+   - **Password:** `PASSWORD_REMOVED_SET_A_NEW_ONE`
 
-3. Change `cookiesSold` to the current number
-4. Commit and push to GitHub
-5. Site updates automatically within 1-2 minutes
+### What You Can Do in Admin
 
-## Updating the Leaderboard
+- ✅ Update cookie sales count
+- ✅ Change cookie goal
+- ✅ Add/remove/edit leaderboard supporters
+- ✅ Changes save instantly to localStorage
+- ✅ Main site updates automatically (no git push needed!)
 
-Find the `leaderboard-section` in `index.html` (around line 430) and edit the names and box counts:
+### How It Works
 
-```html
-<div class="leader-item">
-    <span class="leader-rank">🥇</span>
-    <span class="leader-name">The Smith Family</span>
-    <span class="leader-boxes">12 boxes</span>
-</div>
-```
+The admin dashboard uses **localStorage** to store data in the browser. When you update the sales or leaderboard in the admin panel, the main site reads from localStorage and displays the updated information immediately.
+
+**Note:** Data is stored per-browser. If you clear your browser data or switch browsers, you'll see the default values again.
+
+### Manual Updates (Old Method)
+
+If you prefer to edit code directly, you can still update `index.html` and push to GitHub, but the admin dashboard is much easier!
 
 ## Features
 
+- ✅ **Secret admin dashboard** - Update sales and leaderboard without code
 - ✅ Animated hero section with floating cookies
 - ✅ Live goal tracker with progress bar
 - ✅ Cookie lineup with descriptions
-- ✅ Top supporters leaderboard
+- ✅ Dynamic top supporters leaderboard
 - ✅ Confetti celebrations
 - ✅ Mobile responsive
 - ✅ Links directly to Digital Cookie store
+- ✅ Leigha's actual Girl Scout photo
 
 ## Tech Stack
 
