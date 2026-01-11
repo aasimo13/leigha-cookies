@@ -502,19 +502,34 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 Leigha's Cookie HQ | Girl Scouts of America</p>
-        <p style="margin-top: 0.5rem; opacity: 0.8;">Built with 💚 and 🍪</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">Built with <span id="secretHeart" style="cursor: pointer; display: inline-block; transition: transform 0.2s;">💚</span> and 🍪</p>
     </footer>
 
     <script>
-        // Configuration - UPDATE THESE VALUES!
-        const CONFIG = {
-            cookiesSold: 0,      // ← UPDATE THIS NUMBER!
-            cookiesGoal: 300     // ← UPDATE IF GOAL CHANGES
-        };
+        // Load data from localStorage (managed via admin dashboard)
+        function getCookieData() {
+            const defaultData = { sold: 0, goal: 300 };
+            const stored = localStorage.getItem('cookieSales');
+            return stored ? JSON.parse(stored) : defaultData;
+        }
+
+        function getLeaderboardData() {
+            const defaultLeaderboard = [
+                { name: 'The Smith Family', boxes: 12 },
+                { name: 'Grandma & Grandpa', boxes: 10 },
+                { name: 'Mrs. Johnson', boxes: 8 },
+                { name: 'The Martinez Family', boxes: 6 },
+                { name: 'Mr. Davis', boxes: 5 }
+            ];
+            const stored = localStorage.getItem('leaderboard');
+            return stored ? JSON.parse(stored) : defaultLeaderboard;
+        }
 
         // Goal tracker
         function updateGoalTracker() {
-            const { cookiesSold, cookiesGoal } = CONFIG;
+            const data = getCookieData();
+            const cookiesSold = data.sold;
+            const cookiesGoal = data.goal;
             const percentage = Math.min((cookiesSold / cookiesGoal) * 100, 100);
 
             document.getElementById('soldCount').textContent = cookiesSold;
@@ -528,6 +543,51 @@
                 document.getElementById('progressText').textContent = Math.round(percentage) + '%';
             }
         }
+
+        // Update leaderboard dynamically
+        function updateLeaderboard() {
+            const leaders = getLeaderboardData();
+            const leaderboardDiv = document.querySelector('.leaderboard');
+            const medals = ['🥇', '🥈', '🥉'];
+
+            let html = '';
+            leaders.forEach((leader, index) => {
+                const rank = index < 3 ? medals[index] : (index + 1);
+                html += `
+                    <div class="leader-item">
+                        <span class="leader-rank">${rank}</span>
+                        <span class="leader-name">${leader.name}</span>
+                        <span class="leader-boxes">${leader.boxes} boxes</span>
+                    </div>
+                `;
+            });
+
+            leaderboardDiv.innerHTML = html;
+        }
+
+        // Secret admin access
+        let heartClicks = 0;
+        let heartClickTimer = null;
+        document.getElementById('secretHeart').addEventListener('click', function(e) {
+            e.preventDefault();
+            heartClicks++;
+
+            // Reset counter after 3 seconds of no clicks
+            clearTimeout(heartClickTimer);
+            heartClickTimer = setTimeout(() => {
+                heartClicks = 0;
+            }, 3000);
+
+            // Visual feedback
+            this.style.transform = 'scale(1.3)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+
+            if (heartClicks === 5) {
+                window.location.href = 'admin.html';
+            }
+        });
 
         // Floating cookies background
         function createFloatingCookies() {
@@ -570,6 +630,7 @@
 
         // Initialize
         updateGoalTracker();
+        updateLeaderboard();
         createFloatingCookies();
 
         // Fix scout photo URL
