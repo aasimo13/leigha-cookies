@@ -1,0 +1,45 @@
+name: Auto-Update Cookie Sales
+
+on:
+  schedule:
+    # Runs every hour at the top of the hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allows manual trigger from GitHub Actions tab
+
+jobs:
+  scrape-and-update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run cookie sales scraper
+        run: |
+          echo "🍪 Fetching latest cookie sales data..."
+          node scraper.js --update-web
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --exit-code sales-data.json || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changes detected
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add sales-data.json
+          git commit -m "🤖 Auto-update: Cookie sales data ($(date '+%Y-%m-%d %H:%M:%S UTC'))"
+          git push
+
+      - name: No changes detected
+        if: steps.check_changes.outputs.changed != 'true'
+        run: echo "✅ No changes in cookie sales - sales-data.json is up to date"

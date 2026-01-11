@@ -6,6 +6,20 @@ Enterprise-grade Girl Scout cookie storefront for Leigha.
 
 This site is hosted on GitHub Pages and uses a custom domain: **leighagrace.com**
 
+## 🤖 Automated Updates (NEW!)
+
+**The site now updates automatically every hour!**
+
+GitHub Actions runs a scraper every hour that:
+- ✅ Fetches current sales from Digital Cookie website
+- ✅ Updates `sales-data.json` in the repo
+- ✅ Automatically commits changes
+- ✅ Website loads the new data instantly
+
+**You don't need to do anything!** Just watch the sales count update automatically.
+
+📖 **[Read full documentation](AUTOMATED-UPDATES.md)** for details, manual triggering, and troubleshooting.
+
 ## Admin Dashboard 🔒
 
 **No more editing code!** Update everything through the admin dashboard.
@@ -76,8 +90,9 @@ See `auto-update-bookmarklet.html` for full details and code snippets!
 
 ## Features
 
+- 🤖 **AUTOMATED HOURLY UPDATES** - Sales count auto-syncs via GitHub Actions!
 - ✅ **Secret admin dashboard** - Update sales and leaderboard without code
-- ✅ **Auto-update tools** - Bookmarklet & scraper to sync from Digital Cookie
+- ✅ **Multiple update methods** - Auto-scraper, bookmarklet, or manual
 - ✅ **Weekly leaderboard** - Top supporters updated weekly
 - ✅ Animated hero section with floating cookies
 - ✅ Live goal tracker with progress bar

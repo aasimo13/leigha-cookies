@@ -507,11 +507,32 @@
     </footer>
 
     <script>
-        // Load data from localStorage (managed via admin dashboard)
-        function getCookieData() {
+        // Load data from multiple sources (priority: auto-scraped > manual admin > default)
+        async function getCookieData() {
             const defaultData = { sold: 0, goal: 300 };
+
+            // First, try to fetch auto-updated data from GitHub Actions
+            try {
+                const response = await fetch('sales-data.json?t=' + Date.now());
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Loaded sales data from auto-scraper (last updated: ' + new Date(data.lastUpdated).toLocaleString() + ')');
+                    return data;
+                }
+            } catch (error) {
+                console.log('⚠️ Auto-scraped data not available, checking manual admin data...');
+            }
+
+            // Fall back to localStorage (manual admin updates)
             const stored = localStorage.getItem('cookieSales');
-            return stored ? JSON.parse(stored) : defaultData;
+            if (stored) {
+                console.log('✅ Loaded sales data from admin dashboard');
+                return JSON.parse(stored);
+            }
+
+            // Finally, fall back to default
+            console.log('ℹ️ Using default sales data');
+            return defaultData;
         }
 
         function getLeaderboardData() {
@@ -527,8 +548,8 @@
         }
 
         // Goal tracker
-        function updateGoalTracker() {
-            const data = getCookieData();
+        async function updateGoalTracker() {
+            const data = await getCookieData();
             const cookiesSold = data.sold;
             const cookiesGoal = data.goal;
             const percentage = Math.min((cookiesSold / cookiesGoal) * 100, 100);

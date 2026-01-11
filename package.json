@@ -5,7 +5,8 @@
   "main": "scraper.js",
   "scripts": {
     "scrape": "node scraper.js",
-    "update": "node scraper.js --update"
+    "update": "node scraper.js --update",
+    "update-web": "node scraper.js --update-web"
   },
   "keywords": [
     "girl-scouts",
