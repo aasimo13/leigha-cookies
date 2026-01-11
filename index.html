@@ -190,22 +190,32 @@
 
         .cookie-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .cookie-grid {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
         }
 
         .cookie-card {
             background: white;
             border-radius: 15px;
-            padding: 2rem;
+            padding: 1.5rem;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
         .cookie-card:hover {
@@ -218,17 +228,32 @@
             margin-bottom: 1rem;
         }
 
+        .cookie-image {
+            width: 100%;
+            max-width: 200px;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .cookie-card:hover .cookie-image {
+            transform: scale(1.05);
+        }
+
         .cookie-name {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #00543d;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .cookie-description {
             color: #666;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin-bottom: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
         }
 
         .cookie-tag {
@@ -417,40 +442,75 @@
     <section class="cookies-section">
         <h2 class="section-title">🍪 Cookie Lineup 2026</h2>
         <div class="cookie-grid">
+            <!-- Thin Mints -->
             <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
-                <div class="cookie-icon">🍃</div>
-                <div class="cookie-name">Thin Mints</div>
-                <div class="cookie-description">Crispy chocolate cookies with a refreshing mint coating. An all-time classic!</div>
+                <img src="images/cookies/thin-mints.png" alt="Thin Mints" class="cookie-image">
+                <div class="cookie-name">Thin Mints®</div>
+                <div class="cookie-description">Crisp, chocolaty cookies made with natural oil of peppermint</div>
                 <span class="cookie-tag">FAN FAVORITE</span>
             </a>
+
+            <!-- Samoas / Caramel deLites -->
             <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
-                <div class="cookie-icon">🥜</div>
-                <div class="cookie-name">Tagalongs</div>
-                <div class="cookie-description">Peanut butter layered on a crispy cookie and covered with a chocolatey coating.</div>
+                <img src="images/cookies/samoas.png" alt="Samoas" class="cookie-image">
+                <div class="cookie-name">Samoas®</div>
+                <div class="cookie-description">Crisp cookies with caramel, coconut, and dark chocolaty stripes</div>
                 <span class="cookie-tag">BEST SELLER</span>
             </a>
+
+            <!-- Tagalongs -->
             <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
-                <div class="cookie-icon">🥥</div>
-                <div class="cookie-name">Samoas/Caramel deLites</div>
-                <div class="cookie-description">Crispy cookies coated in caramel, sprinkled with toasted coconut, and laced with chocolate.</div>
-                <span class="cookie-tag">DELICIOUS</span>
+                <img src="images/cookies/tagalongs.png" alt="Tagalongs" class="cookie-image">
+                <div class="cookie-name">Tagalongs®</div>
+                <div class="cookie-description">Crispy cookies layered with peanut butter and covered with a chocolaty coating</div>
+                <span class="cookie-tag">POPULAR</span>
             </a>
+
+            <!-- Adventurefuls -->
             <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
-                <div class="cookie-icon">🍋</div>
-                <div class="cookie-name">Lemonades</div>
-                <div class="cookie-description">Savory slices of shortbread with a refreshing tangy lemon-flavored icing.</div>
-                <span class="cookie-tag">REFRESHING</span>
+                <img src="images/cookies/adventurefuls.png" alt="Adventurefuls" class="cookie-image">
+                <div class="cookie-name">Adventurefuls®</div>
+                <div class="cookie-description">Indulgent brownie-inspired cookies with caramel flavored crème and a hint of sea salt</div>
+                <span class="cookie-tag">INDULGENT</span>
             </a>
+
+            <!-- Do-si-dos -->
             <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
-                <div class="cookie-icon">🍪</div>
-                <div class="cookie-name">Trefoils</div>
-                <div class="cookie-description">Classic shortbread cookies in the iconic Girl Scout trefoil shape.</div>
+                <img src="images/cookies/do-si-dos.png" alt="Do-si-dos" class="cookie-image">
+                <div class="cookie-name">Do-si-dos®</div>
+                <div class="cookie-description">Oatmeal sandwich cookies with peanut butter filling</div>
                 <span class="cookie-tag">CLASSIC</span>
             </a>
+
+            <!-- Trefoils -->
             <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
-                <div class="cookie-icon">🍫</div>
-                <div class="cookie-name">S'mores</div>
-                <div class="cookie-description">Graham sandwich cookies with creamy chocolate and marshmallowy filling.</div>
+                <img src="images/cookies/trefoils.png" alt="Trefoils" class="cookie-image">
+                <div class="cookie-name">Trefoils®</div>
+                <div class="cookie-description">Iconic shortbread cookies inspired by the original Girl Scout recipe</div>
+                <span class="cookie-tag">ORIGINAL</span>
+            </a>
+
+            <!-- Lemon-Ups -->
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <img src="images/cookies/lemon-ups.png" alt="Lemon-Ups" class="cookie-image">
+                <div class="cookie-name">Lemon-Ups®</div>
+                <div class="cookie-description">Crispy lemon flavored cookies with inspiring messages to lift your spirits</div>
+                <span class="cookie-tag">UPLIFTING</span>
+            </a>
+
+            <!-- Toffee-tastic -->
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <img src="images/cookies/toffee-tastic.png" alt="Toffee-tastic" class="cookie-image">
+                <div class="cookie-name">Toffee-tastic®</div>
+                <div class="cookie-description">Rich, buttery cookies with sweet, crunchy toffee bits (Gluten-free!)</div>
+                <span class="cookie-tag">GLUTEN-FREE</span>
+            </a>
+
+            <!-- Exploremores -->
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <img src="images/cookies/exploremores.png" alt="Exploremores" class="cookie-image">
+                <div class="cookie-name">Exploremores™</div>
+                <div class="cookie-description">Rocky road ice cream-inspired cookies filled with chocolate, marshmallow and toasted almond crème</div>
                 <span class="cookie-tag">NEW!</span>
             </a>
         </div>
