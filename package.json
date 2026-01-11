@@ -1,0 +1,17 @@
+{
+  "name": "leigha-cookie-scraper",
+  "version": "1.0.0",
+  "description": "Web scraper for Leigha's Digital Cookie sales",
+  "main": "scraper.js",
+  "scripts": {
+    "scrape": "node scraper.js",
+    "update": "node scraper.js --update"
+  },
+  "keywords": [
+    "girl-scouts",
+    "cookies",
+    "scraper"
+  ],
+  "author": "Aaron",
+  "license": "MIT"
+}
