@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leigha's Cookie HQ | Girl Scout Cookies 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #00543d 0%, #4d9078 50%, #ff69b4 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 2rem;
+        }
+
+        .cookies-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .cookie-float {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.2;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 1200px;
+            color: white;
+        }
+
+        .scout-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid #ff69b4;
+            object-fit: cover;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #ff69b4;
+            color: white;
+            padding: 1.5rem 3rem;
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255,105,180,0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cta-button:hover {
+            background: #ff1493;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255,105,180,0.6);
+        }
+
+        /* Goal Tracker Section */
+        .goal-section {
+            padding: 4rem 2rem;
+            background: white;
+            text-align: center;
+        }
+
+        .goal-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .goal-header {
+            font-size: 2.5rem;
+            color: #00543d;
+            margin-bottom: 2rem;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff69b4;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            height: 40px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00543d 0%, #4d9078 50%, #ff69b4 100%);
+            transition: width 1s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 1rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Cookie Lineup Section */
+        .cookies-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(to bottom, #f8f9fa, #fff);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #00543d;
+            margin-bottom: 3rem;
+        }
+
+        .cookie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .cookie-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .cookie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .cookie-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .cookie-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00543d;
+            margin-bottom: 0.5rem;
+        }
+
+        .cookie-description {
+            color: #666;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .cookie-tag {
+            display: inline-block;
+            background: #ff69b4;
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Story Section */
+        .story-section {
+            padding: 4rem 2rem;
+            background: #00543d;
+            color: white;
+        }
+
+        .story-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .story-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        /* Leaderboard Section */
+        .leaderboard-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #ff69b4 0%, #ffc0cb 100%);
+        }
+
+        .leaderboard-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .leaderboard {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .leader-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+            transition: background 0.3s ease;
+        }
+
+        .leader-item:hover {
+            background: #f8f9fa;
+        }
+
+        .leader-item:last-child {
+            border-bottom: none;
+        }
+
+        .leader-rank {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff69b4;
+            width: 50px;
+        }
+
+        .leader-name {
+            flex: 1;
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        .leader-boxes {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00543d;
+        }
+
+        /* Footer */
+        footer {
+            background: #00543d;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .cta-button {
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+            }
+
+            .goal-header, .section-title {
+                font-size: 2rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #ff69b4;
+            position: absolute;
+            animation: confetti-fall 3s linear forwards;
+            z-index: 9999;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="cookies-background" id="cookiesBg"></div>
+        <div class="hero-content">
+            <img src="https://digitalcookie.girlscouts.org/scout/leigha765749" alt="Leigha in Girl Scout uniform" class="scout-photo" id="scoutPhoto">
+            <h1>🍪 Leigha's Cookie HQ</h1>
+            <p class="subtitle">Support my Girl Scout journey & get amazing cookies!</p>
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cta-button" onclick="celebrate()">Order Cookies Now! 🎉</a>
+        </div>
+    </section>
+
+    <!-- Goal Tracker -->
+    <section class="goal-section">
+        <div class="goal-container">
+            <h2 class="goal-header">🎯 My Cookie Goal</h2>
+            <div class="progress-stats">
+                <div class="stat">
+                    <div class="stat-number" id="soldCount">0</div>
+                    <div class="stat-label">Boxes Sold</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="goalCount">300</div>
+                    <div class="stat-label">Goal</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="percentComplete">0%</div>
+                    <div class="stat-label">Complete</div>
+                </div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar">
+                    <span id="progressText"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cookie Lineup -->
+    <section class="cookies-section">
+        <h2 class="section-title">🍪 Cookie Lineup 2026</h2>
+        <div class="cookie-grid">
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <div class="cookie-icon">🍃</div>
+                <div class="cookie-name">Thin Mints</div>
+                <div class="cookie-description">Crispy chocolate cookies with a refreshing mint coating. An all-time classic!</div>
+                <span class="cookie-tag">FAN FAVORITE</span>
+            </a>
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <div class="cookie-icon">🥜</div>
+                <div class="cookie-name">Tagalongs</div>
+                <div class="cookie-description">Peanut butter layered on a crispy cookie and covered with a chocolatey coating.</div>
+                <span class="cookie-tag">BEST SELLER</span>
+            </a>
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <div class="cookie-icon">🥥</div>
+                <div class="cookie-name">Samoas/Caramel deLites</div>
+                <div class="cookie-description">Crispy cookies coated in caramel, sprinkled with toasted coconut, and laced with chocolate.</div>
+                <span class="cookie-tag">DELICIOUS</span>
+            </a>
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <div class="cookie-icon">🍋</div>
+                <div class="cookie-name">Lemonades</div>
+                <div class="cookie-description">Savory slices of shortbread with a refreshing tangy lemon-flavored icing.</div>
+                <span class="cookie-tag">REFRESHING</span>
+            </a>
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <div class="cookie-icon">🍪</div>
+                <div class="cookie-name">Trefoils</div>
+                <div class="cookie-description">Classic shortbread cookies in the iconic Girl Scout trefoil shape.</div>
+                <span class="cookie-tag">CLASSIC</span>
+            </a>
+            <a href="https://digitalcookie.girlscouts.org/scout/leigha765749" class="cookie-card">
+                <div class="cookie-icon">🍫</div>
+                <div class="cookie-name">S'mores</div>
+                <div class="cookie-description">Graham sandwich cookies with creamy chocolate and marshmallowy filling.</div>
+                <span class="cookie-tag">NEW!</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section class="story-section">
+        <div class="story-content">
+            <h2>💚 What I'll Do With Cookie Money</h2>
+            <p class="story-text">Our troop will use cookie earnings for camping trips, badges, community service projects, and fun activities that help us learn new skills and give back to our community!</p>
+
+            <h2 style="margin-top: 3rem;">🌟 What I'm Learning</h2>
+            <p class="story-text">I'm learning to talk to new people, count money, set goals, and work as a team. Selling cookies helps me build confidence and practice being responsible!</p>
+        </div>
+    </section>
+
+    <!-- Leaderboard -->
+    <section class="leaderboard-section">
+        <h2 class="leaderboard-title">🏆 Top Supporters</h2>
+        <div class="leaderboard">
+            <div class="leader-item">
+                <span class="leader-rank">🥇</span>
+                <span class="leader-name">The Smith Family</span>
+                <span class="leader-boxes">12 boxes</span>
+            </div>
+            <div class="leader-item">
+                <span class="leader-rank">🥈</span>
+                <span class="leader-name">Grandma & Grandpa</span>
+                <span class="leader-boxes">10 boxes</span>
+            </div>
+            <div class="leader-item">
+                <span class="leader-rank">🥉</span>
+                <span class="leader-name">Mrs. Johnson</span>
+                <span class="leader-boxes">8 boxes</span>
+            </div>
+            <div class="leader-item">
+                <span class="leader-rank">4</span>
+                <span class="leader-name">The Martinez Family</span>
+                <span class="leader-boxes">6 boxes</span>
+            </div>
+            <div class="leader-item">
+                <span class="leader-rank">5</span>
+                <span class="leader-name">Mr. Davis</span>
+                <span class="leader-boxes">5 boxes</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Leigha's Cookie HQ | Girl Scouts of America</p>
+        <p style="margin-top: 0.5rem; opacity: 0.8;">Built with 💚 and 🍪</p>
+    </footer>
+
+    <script>
+        // Configuration - UPDATE THESE VALUES!
+        const CONFIG = {
+            cookiesSold: 0,      // ← UPDATE THIS NUMBER!
+            cookiesGoal: 300     // ← UPDATE IF GOAL CHANGES
+        };
+
+        // Goal tracker
+        function updateGoalTracker() {
+            const { cookiesSold, cookiesGoal } = CONFIG;
+            const percentage = Math.min((cookiesSold / cookiesGoal) * 100, 100);
+
+            document.getElementById('soldCount').textContent = cookiesSold;
+            document.getElementById('goalCount').textContent = cookiesGoal;
+            document.getElementById('percentComplete').textContent = Math.round(percentage) + '%';
+
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = percentage + '%';
+
+            if (percentage > 0) {
+                document.getElementById('progressText').textContent = Math.round(percentage) + '%';
+            }
+        }
+
+        // Floating cookies background
+        function createFloatingCookies() {
+            const container = document.getElementById('cookiesBg');
+            const cookies = ['🍪', '🥠', '🧁', '🍩'];
+
+            for (let i = 0; i < 15; i++) {
+                const cookie = document.createElement('div');
+                cookie.className = 'cookie-float';
+                cookie.textContent = cookies[Math.floor(Math.random() * cookies.length)];
+                cookie.style.left = Math.random() * 100 + '%';
+                cookie.style.top = Math.random() * 100 + '%';
+                cookie.style.animationDelay = Math.random() * 5 + 's';
+                cookie.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(cookie);
+            }
+        }
+
+        // Confetti celebration
+        function celebrate() {
+            const colors = ['#ff69b4', '#00543d', '#ffc0cb', '#4d9078', '#ff1493'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    document.body.appendChild(confetti);
+
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+
+        // Load confetti on page load
+        window.addEventListener('load', () => {
+            celebrate();
+        });
+
+        // Initialize
+        updateGoalTracker();
+        createFloatingCookies();
+
+        // Fix scout photo URL
+        document.getElementById('scoutPhoto').addEventListener('error', function() {
+            this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"%3E%3Ccircle cx="100" cy="100" r="100" fill="%2300543d"/%3E%3Ctext x="100" y="100" text-anchor="middle" dy=".3em" font-size="80" fill="white"%3E👧%3C/text%3E%3C/svg%3E';
+        });
+    </script>
+</body>
+</html>
