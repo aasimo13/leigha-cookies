@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Counter Auto-Update Bookmarklet</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #00543d 0%, #4d9078 50%, #ff69b4 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #00543d;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #ff69b4;
+        }
+
+        .section h2 {
+            color: #00543d;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .bookmarklet {
+            background: #00543d;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            cursor: move;
+            margin: 1rem 0;
+            transition: transform 0.2s;
+        }
+
+        .bookmarklet:hover {
+            transform: scale(1.05);
+            background: #ff69b4;
+        }
+
+        .instructions {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .note {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 1rem 0;
+        }
+
+        .emoji {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">🍪🤖</div>
+        <h1>Cookie Counter Auto-Update</h1>
+        <p class="subtitle">Automatically sync sales from Digital Cookie to leighagrace.com</p>
+
+        <!-- Method 1: Bookmarklet -->
+        <div class="section">
+            <h2>Method 1: One-Click Bookmarklet (Easiest!) 🔖</h2>
+            <p>Drag this button to your bookmarks bar:</p>
+
+            <a href="javascript:(function(){if(window.location.hostname.includes('digitalcookie.girlscouts.org')){const goalText=document.body.innerText;const match=goalText.match(/(\d+)\s+Packages\s+Left\s+To\s+Go/i);if(match){const left=parseInt(match[1]);const goal=300;const sold=goal-left;const data={sold:sold,goal:goal};localStorage.setItem('cookieSales',JSON.stringify(data));alert('✅ Updated!\n\nBoxes Sold: '+sold+'\nGoal: '+goal+'\n\nData saved to localStorage.\nGo to leighagrace.com to see the update!');}else{alert('❌ Could not find sales data on this page.');}}else{alert('❌ Please run this bookmarklet while on the Digital Cookie website:\nhttps://digitalcookie.girlscouts.org/scout/leigha765749');}})()" class="bookmarklet">
+                🍪 Update Cookie Count
+            </a>
+
+            <div class="instructions">
+                <strong>How to use:</strong>
+                <ol>
+                    <li>Drag the button above to your browser's bookmarks bar</li>
+                    <li>Go to <code>digitalcookie.girlscouts.org/scout/leigha765749</code></li>
+                    <li>Click the bookmarklet in your bookmarks bar</li>
+                    <li>It will automatically read the sales count and update localStorage</li>
+                    <li>Visit <code>leighagrace.com</code> to see the updated count!</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Method 2: Manual Script -->
+        <div class="section">
+            <h2>Method 2: Manual Console Script 💻</h2>
+            <p>If bookmarklets don't work, run this in the browser console:</p>
+
+            <div class="instructions">
+                <strong>Steps:</strong>
+                <ol>
+                    <li>Go to <code>digitalcookie.girlscouts.org/scout/leigha765749</code></li>
+                    <li>Press <code>F12</code> or right-click → Inspect</li>
+                    <li>Click the "Console" tab</li>
+                    <li>Copy and paste this code:</li>
+                </ol>
+
+                <pre style="background: #263238; color: #aed581; padding: 1rem; border-radius: 8px; overflow-x: auto; margin-top: 1rem;"><code>// Extract sales data from Digital Cookie page
+const goalText = document.body.innerText;
+const match = goalText.match(/(\d+)\s+Packages\s+Left\s+To\s+Go/i);
+
+if (match) {
+    const packagesLeft = parseInt(match[1]);
+    const goal = 300;
+    const sold = goal - packagesLeft;
+
+    const data = {
+        sold: sold,
+        goal: goal
+    };
+
+    localStorage.setItem('cookieSales', JSON.stringify(data));
+
+    console.log('✅ Cookie sales updated!');
+    console.log('Boxes Sold:', sold);
+    console.log('Goal:', goal);
+    console.log('Progress:', Math.round((sold/goal)*100) + '%');
+    console.log('\nNow visit leighagrace.com to see the update!');
+} else {
+    console.error('❌ Could not find sales data');
+}</code></pre>
+
+                <ol start="5">
+                    <li>Press Enter to run</li>
+                    <li>Visit <code>leighagrace.com</code> to see the updated count!</li>
+                </ol>
+            </div>
+        </div>
+
+        <!-- Method 3: Node.js Script -->
+        <div class="section">
+            <h2>Method 3: Node.js Scraper Script 🚀</h2>
+            <p>For automated updates, use the <code>scraper.js</code> file:</p>
+
+            <div class="instructions">
+                <strong>Setup (one-time):</strong>
+                <ol>
+                    <li>Make sure Node.js is installed</li>
+                    <li>No additional packages needed (uses built-in modules)</li>
+                </ol>
+
+                <strong>Usage:</strong>
+                <pre style="background: #263238; color: #aed581; padding: 1rem; border-radius: 8px; margin-top: 1rem;"><code># Just fetch and display the data
+node scraper.js
+
+# Fetch and save to admin-data.json
+node scraper.js --update</code></pre>
+
+                <p style="margin-top: 1rem;">Then manually update the admin dashboard with the new numbers.</p>
+            </div>
+        </div>
+
+        <!-- Important Note -->
+        <div class="note">
+            <strong>⚠️ Important Notes:</strong>
+            <ul style="margin-top: 0.5rem;">
+                <li><strong>Same Browser:</strong> The bookmarklet and console methods work because they run on the same domain and can access the same localStorage</li>
+                <li><strong>Manual Final Step:</strong> You still need to visit the admin dashboard and manually enter the numbers (or the bookmarklet can sync if both sites are open)</li>
+                <li><strong>No Backend:</strong> Since this is a static GitHub Pages site, we can't run automated server-side scraping</li>
+                <li><strong>Security:</strong> These methods only work when you're logged in and viewing the pages</li>
+            </ul>
+        </div>
+
+        <!-- Back Link -->
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="index.html" style="color: #ff69b4; text-decoration: none; font-weight: bold;">← Back to Cookie Site</a>
+        </div>
+    </div>
+</body>
+</html>

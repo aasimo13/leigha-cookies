@@ -38,9 +38,47 @@ The admin dashboard uses **localStorage** to store data in the browser. When you
 
 If you prefer to edit code directly, you can still update `index.html` and push to GitHub, but the admin dashboard is much easier!
 
+## Auto-Update Tools 🤖
+
+Want to automatically sync sales from the Digital Cookie website? We've got you covered!
+
+### Option 1: One-Click Bookmarklet (Easiest!)
+
+Open `auto-update-bookmarklet.html` in your browser for detailed instructions. Quick version:
+
+1. Open the `auto-update-bookmarklet.html` page
+2. Drag the "Update Cookie Count" button to your bookmarks bar
+3. Visit the Digital Cookie page
+4. Click the bookmarklet - it automatically reads the sales and updates localStorage!
+
+### Option 2: Node.js Scraper Script
+
+For command-line enthusiasts:
+
+```bash
+# Run the scraper (just displays data)
+node scraper.js
+
+# Run and save to admin-data.json
+node scraper.js --update
+```
+
+The scraper fetches the current sales from the Digital Cookie website and displays it in your terminal. With `--update`, it saves the data to a JSON file that you can reference.
+
+### Option 3: Browser Console (Manual but Quick)
+
+1. Visit `digitalcookie.girlscouts.org/scout/leigha765749`
+2. Press F12 (open DevTools)
+3. Go to Console tab
+4. Run the script provided in `auto-update-bookmarklet.html`
+
+See `auto-update-bookmarklet.html` for full details and code snippets!
+
 ## Features
 
 - ✅ **Secret admin dashboard** - Update sales and leaderboard without code
+- ✅ **Auto-update tools** - Bookmarklet & scraper to sync from Digital Cookie
+- ✅ **Weekly leaderboard** - Top supporters updated weekly
 - ✅ Animated hero section with floating cookies
 - ✅ Live goal tracker with progress bar
 - ✅ Cookie lineup with descriptions
