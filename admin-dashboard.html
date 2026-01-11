@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Cookie HQ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #00543d 0%, #4d9078 50%, #ff69b4 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .dashboard-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #00543d;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .logout-button {
+            background: #ff69b4;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .logout-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            color: #00543d;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid #ff69b4;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff69b4;
+        }
+
+        .save-button {
+            background: linear-gradient(135deg, #00543d 0%, #ff69b4 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .save-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255,105,180,0.4);
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: none;
+            text-align: center;
+            animation: slideIn 0.5s;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .leaderboard-entry {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px 60px;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .leaderboard-entry input {
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+        }
+
+        .leaderboard-entry .rank {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .delete-button {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .delete-button:hover {
+            background: #d32f2f;
+        }
+
+        .add-leader-button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+
+        .add-leader-button:hover {
+            background: #388e3c;
+        }
+
+        .current-value {
+            background: #e3f2fd;
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #2196f3;
+        }
+
+        .current-value strong {
+            color: #1976d2;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🍪👑</div>
+            <h1>Admin Dashboard</h1>
+            <p>Update Leigha's Cookie Sales & Leaderboard</p>
+            <button class="logout-button" onclick="logout()">Logout</button>
+        </div>
+
+        <!-- Cookie Count Section -->
+        <div class="card">
+            <h2>🎯 Cookie Sales Goal</h2>
+            <div class="success-message" id="salesSuccess">Changes saved successfully!</div>
+
+            <div class="current-value">
+                <strong>Current:</strong> <span id="currentSold">0</span> boxes sold / <span id="currentGoal">300</span> goal
+            </div>
+
+            <form id="salesForm">
+                <div class="form-group">
+                    <label for="cookiesSold">Boxes Sold</label>
+                    <input type="number" id="cookiesSold" name="cookiesSold" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="cookiesGoal">Goal (boxes)</label>
+                    <input type="number" id="cookiesGoal" name="cookiesGoal" min="1" required>
+                </div>
+
+                <button type="submit" class="save-button">💾 Save Changes</button>
+            </form>
+        </div>
+
+        <!-- Leaderboard Section -->
+        <div class="card">
+            <h2>🏆 Top Supporters Leaderboard</h2>
+            <div class="success-message" id="leaderboardSuccess">Leaderboard updated successfully!</div>
+
+            <div id="leaderboardEntries"></div>
+
+            <button class="add-leader-button" onclick="addLeaderEntry()">+ Add Supporter</button>
+            <br><br>
+            <button class="save-button" onclick="saveLeaderboard()">💾 Save Leaderboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        if (!sessionStorage.getItem('adminAuthenticated')) {
+            window.location.href = 'admin.html';
+        }
+
+        // Load initial data
+        function loadData() {
+            // Load cookie sales
+            const salesData = JSON.parse(localStorage.getItem('cookieSales') || '{"sold": 0, "goal": 300}');
+            document.getElementById('cookiesSold').value = salesData.sold;
+            document.getElementById('cookiesGoal').value = salesData.goal;
+            document.getElementById('currentSold').textContent = salesData.sold;
+            document.getElementById('currentGoal').textContent = salesData.goal;
+
+            // Load leaderboard
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            if (leaderboard.length === 0) {
+                // Default leaderboard
+                const defaultLeaderboard = [
+                    { name: 'The Smith Family', boxes: 12 },
+                    { name: 'Grandma & Grandpa', boxes: 10 },
+                    { name: 'Mrs. Johnson', boxes: 8 },
+                    { name: 'The Martinez Family', boxes: 6 },
+                    { name: 'Mr. Davis', boxes: 5 }
+                ];
+                localStorage.setItem('leaderboard', JSON.stringify(defaultLeaderboard));
+                renderLeaderboard(defaultLeaderboard);
+            } else {
+                renderLeaderboard(leaderboard);
+            }
+        }
+
+        // Render leaderboard entries
+        function renderLeaderboard(leaders) {
+            const container = document.getElementById('leaderboardEntries');
+            container.innerHTML = '';
+
+            const medals = ['🥇', '🥈', '🥉'];
+
+            leaders.forEach((leader, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'leaderboard-entry';
+                entry.innerHTML = `
+                    <div class="rank">${index < 3 ? medals[index] : (index + 1)}</div>
+                    <input type="text" class="leader-name" value="${leader.name}" placeholder="Name">
+                    <input type="number" class="leader-boxes" value="${leader.boxes}" min="0" placeholder="Boxes">
+                    <button class="delete-button" onclick="deleteLeader(${index})">🗑️</button>
+                `;
+                container.appendChild(entry);
+            });
+        }
+
+        // Save cookie sales
+        document.getElementById('salesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const sold = parseInt(document.getElementById('cookiesSold').value);
+            const goal = parseInt(document.getElementById('cookiesGoal').value);
+
+            const salesData = { sold, goal };
+            localStorage.setItem('cookieSales', JSON.stringify(salesData));
+
+            document.getElementById('currentSold').textContent = sold;
+            document.getElementById('currentGoal').textContent = goal;
+
+            const successMsg = document.getElementById('salesSuccess');
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 3000);
+        });
+
+        // Save leaderboard
+        function saveLeaderboard() {
+            const entries = document.querySelectorAll('.leaderboard-entry');
+            const leaderboard = [];
+
+            entries.forEach(entry => {
+                const name = entry.querySelector('.leader-name').value;
+                const boxes = parseInt(entry.querySelector('.leader-boxes').value) || 0;
+                if (name.trim()) {
+                    leaderboard.push({ name, boxes });
+                }
+            });
+
+            // Sort by boxes descending
+            leaderboard.sort((a, b) => b.boxes - a.boxes);
+
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+            renderLeaderboard(leaderboard);
+
+            const successMsg = document.getElementById('leaderboardSuccess');
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 3000);
+        }
+
+        // Add new leader entry
+        function addLeaderEntry() {
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            leaderboard.push({ name: '', boxes: 0 });
+            renderLeaderboard(leaderboard);
+        }
+
+        // Delete leader entry
+        function deleteLeader(index) {
+            if (confirm('Remove this supporter from the leaderboard?')) {
+                const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+                leaderboard.splice(index, 1);
+                localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+                renderLeaderboard(leaderboard);
+            }
+        }
+
+        // Logout
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            window.location.href = 'index.html';
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
