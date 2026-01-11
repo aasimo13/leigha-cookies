@@ -100,33 +100,52 @@ async function main() {
         console.log(`   Last Updated:    ${new Date(salesData.lastUpdated).toLocaleString()}`);
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
 
-        // Check if --update flag is present
+        // Check for update flags
         const shouldUpdate = process.argv.includes('--update');
+        const shouldUpdateWeb = process.argv.includes('--update-web');
 
-        if (shouldUpdate) {
+        if (shouldUpdate || shouldUpdateWeb) {
             const fs = require('fs');
             const path = require('path');
 
-            // Save to admin-data.json
-            const dataFile = path.join(__dirname, 'admin-data.json');
-            const data = {
-                cookieSales: {
+            if (shouldUpdateWeb) {
+                // Save to sales-data.json for the website to fetch
+                const webDataFile = path.join(__dirname, 'sales-data.json');
+                const webData = {
                     sold: salesData.sold,
-                    goal: salesData.goal
-                },
-                lastScraped: salesData.lastUpdated
-            };
+                    goal: salesData.goal,
+                    lastUpdated: salesData.lastUpdated
+                };
 
-            fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
-            console.log('✅ Updated admin-data.json');
-            console.log('\n📝 Next Steps:');
-            console.log('   1. Open https://leighagrace.com');
-            console.log('   2. Click the green heart 5 times');
-            console.log('   3. Login to admin dashboard');
-            console.log('   4. Update the sales count to: ' + salesData.sold);
-            console.log('   5. Click "Save Changes"\n');
+                fs.writeFileSync(webDataFile, JSON.stringify(webData, null, 2));
+                console.log('✅ Updated sales-data.json');
+                console.log('   The website will automatically fetch this data!\n');
+            }
+
+            if (shouldUpdate) {
+                // Save to admin-data.json for manual reference
+                const dataFile = path.join(__dirname, 'admin-data.json');
+                const data = {
+                    cookieSales: {
+                        sold: salesData.sold,
+                        goal: salesData.goal
+                    },
+                    lastScraped: salesData.lastUpdated
+                };
+
+                fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
+                console.log('✅ Updated admin-data.json');
+                console.log('\n📝 Next Steps:');
+                console.log('   1. Open https://leighagrace.com');
+                console.log('   2. Click the green heart 5 times');
+                console.log('   3. Login to admin dashboard');
+                console.log('   4. Update the sales count to: ' + salesData.sold);
+                console.log('   5. Click "Save Changes"\n');
+            }
         } else {
-            console.log('💡 Tip: Run with --update flag to save this data to admin-data.json\n');
+            console.log('💡 Tips:');
+            console.log('   --update      Save to admin-data.json for manual reference');
+            console.log('   --update-web  Save to sales-data.json for automatic website updates\n');
         }
 
     } catch (error) {
