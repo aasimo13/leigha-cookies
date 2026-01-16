@@ -459,11 +459,11 @@
                 console.log(`📤 Publishing ${filename} to website...`);
 
                 // Call the Vercel serverless function
-                // In production, this will be: https://leighagrace.com/api/publish
+                // Production: https://api.leighagrace.com/api/publish
                 // Locally for testing: http://localhost:3000/api/publish
                 const apiUrl = window.location.hostname === 'localhost'
                     ? 'http://localhost:3000/api/publish'
-                    : 'https://leighagrace.com/api/publish';
+                    : 'https://api.leighagrace.com/api/publish';
 
                 const response = await fetch(apiUrl, {
                     method: 'POST',
