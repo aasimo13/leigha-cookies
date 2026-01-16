@@ -604,7 +604,13 @@
                 { name: 'Mr. Davis', boxes: 5 }
             ];
             const stored = localStorage.getItem('leaderboard');
-            return stored ? JSON.parse(stored) : defaultLeaderboard;
+            if (stored) {
+                console.log('✅ Loaded leaderboard from localStorage:', stored);
+                return JSON.parse(stored);
+            } else {
+                console.log('ℹ️ Using default leaderboard (no data in localStorage)');
+                return defaultLeaderboard;
+            }
         }
 
         // Goal tracker

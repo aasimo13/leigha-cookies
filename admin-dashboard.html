@@ -391,26 +391,40 @@
 
         // Save leaderboard
         function saveLeaderboard() {
+            console.log('💾 Saving leaderboard...');
             const entries = document.querySelectorAll('.leaderboard-entry');
+            console.log('Found entries:', entries.length);
             const leaderboard = [];
 
-            entries.forEach(entry => {
+            entries.forEach((entry, index) => {
                 const name = entry.querySelector('.leader-name').value;
                 const boxes = parseInt(entry.querySelector('.leader-boxes').value) || 0;
+                console.log(`Entry ${index}: ${name} - ${boxes} boxes`);
                 if (name.trim()) {
                     leaderboard.push({ name, boxes });
                 }
             });
 
+            console.log('Leaderboard before sort:', leaderboard);
+
             // Sort by boxes descending
             leaderboard.sort((a, b) => b.boxes - a.boxes);
 
+            console.log('Leaderboard after sort:', leaderboard);
+            console.log('Saving to localStorage...');
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+
+            // Verify it was saved
+            const saved = localStorage.getItem('leaderboard');
+            console.log('✅ Saved to localStorage:', saved);
+
             renderLeaderboard(leaderboard);
 
             const successMsg = document.getElementById('leaderboardSuccess');
             successMsg.classList.add('show');
             setTimeout(() => successMsg.classList.remove('show'), 3000);
+
+            console.log('✅ Leaderboard saved successfully!');
         }
 
         // Add new leader entry
