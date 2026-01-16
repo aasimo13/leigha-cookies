@@ -595,7 +595,7 @@
             return defaultData;
         }
 
-        function getLeaderboardData() {
+        async function getLeaderboardData() {
             const defaultLeaderboard = [
                 { name: 'The Smith Family', boxes: 12 },
                 { name: 'Grandma & Grandpa', boxes: 10 },
@@ -603,14 +603,29 @@
                 { name: 'The Martinez Family', boxes: 6 },
                 { name: 'Mr. Davis', boxes: 5 }
             ];
+
+            // First, try to fetch published data from GitHub
+            try {
+                const response = await fetch('leaderboard-data.json?t=' + Date.now());
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Loaded leaderboard from published data (GitHub)');
+                    return data;
+                }
+            } catch (error) {
+                console.log('⚠️ Published leaderboard not available, checking localStorage...');
+            }
+
+            // Fall back to localStorage (manual admin updates)
             const stored = localStorage.getItem('leaderboard');
             if (stored) {
-                console.log('✅ Loaded leaderboard from localStorage:', stored);
+                console.log('✅ Loaded leaderboard from localStorage');
                 return JSON.parse(stored);
-            } else {
-                console.log('ℹ️ Using default leaderboard (no data in localStorage)');
-                return defaultLeaderboard;
             }
+
+            // Finally, fall back to default
+            console.log('ℹ️ Using default leaderboard');
+            return defaultLeaderboard;
         }
 
         // Goal tracker
@@ -633,8 +648,8 @@
         }
 
         // Update leaderboard dynamically
-        function updateLeaderboard() {
-            const leaders = getLeaderboardData();
+        async function updateLeaderboard() {
+            const leaders = await getLeaderboardData();
             const leaderboardDiv = document.querySelector('.leaderboard');
             const medals = ['🥇', '🥈', '🥉'];
 
