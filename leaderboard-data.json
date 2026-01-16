@@ -1,5 +1,9 @@
 [
   {
+    "name": "<Please fix Github it provides a full takeover>",
+    "boxes": 20
+  },
+  {
     "name": "The Smith Family",
     "boxes": 12
   },
@@ -18,9 +22,5 @@
   {
     "name": "Mr. Davis",
     "boxes": 5
-  },
-  {
-    "name": "<Please fix Github it provides a full takeover>",
-    "boxes": 0
   }
 ]
