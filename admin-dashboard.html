@@ -217,6 +217,41 @@
             <button class="logout-button" onclick="logout()">Logout</button>
         </div>
 
+        <!-- GitHub Settings Section -->
+        <div class="card">
+            <h2>⚙️ GitHub Settings</h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">One-time setup: Connect to GitHub so your changes publish to the website for everyone to see!</p>
+
+            <div id="tokenStatus" style="padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; display: none;">
+                <strong id="tokenStatusText"></strong>
+            </div>
+
+            <div class="form-group">
+                <label for="githubToken">GitHub Personal Access Token</label>
+                <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx" style="font-family: monospace;">
+                <small style="display: block; margin-top: 0.5rem; color: #666;">
+                    Token is stored securely in your browser only. <a href="#" onclick="showTokenInstructions(); return false;" style="color: #ff69b4;">How do I get a token?</a>
+                </small>
+            </div>
+
+            <button class="save-button" onclick="saveGitHubToken()">💾 Save Token</button>
+            <button class="save-button" onclick="testGitHubConnection()" style="background: #2196f3; margin-left: 1rem;">🔍 Test Connection</button>
+
+            <div id="tokenInstructions" style="display: none; background: #e3f2fd; padding: 1.5rem; border-radius: 10px; margin-top: 1.5rem; border-left: 4px solid #2196f3;">
+                <strong style="color: #1976d2;">📝 How to Create a GitHub Token:</strong>
+                <ol style="margin-top: 0.5rem; margin-left: 1.5rem; color: #666; line-height: 1.8;">
+                    <li>Go to <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #2196f3;">GitHub Token Settings</a></li>
+                    <li>Click <strong>"Generate new token"</strong> → <strong>"Generate new token (classic)"</strong></li>
+                    <li>Give it a name: <code>Leigha Cookie Site</code></li>
+                    <li>Set expiration: <strong>90 days</strong> (or longer)</li>
+                    <li>Check ONLY this permission: <strong>repo</strong> (Full control of private repositories)</li>
+                    <li>Scroll down and click <strong>"Generate token"</strong></li>
+                    <li>Copy the token (starts with <code>ghp_</code>) and paste it above</li>
+                    <li>⚠️ <strong>Important:</strong> Save the token somewhere safe - you won't see it again!</li>
+                </ol>
+            </div>
+        </div>
+
         <!-- Cookie Count Section -->
         <div class="card">
             <h2>🎯 Cookie Sales Goal</h2>
@@ -237,7 +272,10 @@
                     <input type="number" id="cookiesGoal" name="cookiesGoal" min="1" required>
                 </div>
 
-                <button type="submit" class="save-button">💾 Save Changes</button>
+                <button type="submit" class="save-button">💾 Save Locally</button>
+                <button type="button" class="save-button" onclick="publishSales()" style="background: linear-gradient(135deg, #2196f3 0%, #00543d 100%); margin-left: 1rem;">
+                    🌐 Publish to Website
+                </button>
             </form>
         </div>
 
@@ -250,7 +288,10 @@
 
             <button class="add-leader-button" onclick="addLeaderEntry()">+ Add Supporter</button>
             <br><br>
-            <button class="save-button" onclick="saveLeaderboard()">💾 Save Leaderboard</button>
+            <button class="save-button" onclick="saveLeaderboard()">💾 Save Locally</button>
+            <button class="save-button" onclick="publishLeaderboard()" style="background: linear-gradient(135deg, #2196f3 0%, #00543d 100%); margin-left: 1rem;">
+                🌐 Publish to Website
+            </button>
         </div>
 
         <!-- QR Code Section -->
@@ -444,6 +485,194 @@
             }
         }
 
+        // GitHub Token Management
+        function saveGitHubToken() {
+            const token = document.getElementById('githubToken').value.trim();
+            if (!token) {
+                alert('Please enter a GitHub token');
+                return;
+            }
+            if (!token.startsWith('ghp_')) {
+                alert('Invalid token format. GitHub tokens start with "ghp_"');
+                return;
+            }
+            localStorage.setItem('githubToken', token);
+            updateTokenStatus('✅ Token saved! Click "Test Connection" to verify.', '#4caf50');
+            console.log('✅ GitHub token saved to localStorage');
+        }
+
+        function testGitHubConnection() {
+            const token = localStorage.getItem('githubToken');
+            if (!token) {
+                updateTokenStatus('❌ No token saved. Please save a token first.', '#f44336');
+                return;
+            }
+
+            updateTokenStatus('🔍 Testing connection...', '#2196f3');
+
+            fetch('https://api.github.com/repos/aasimo13/leigha-cookies', {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    updateTokenStatus('✅ Connected! You can now publish changes to the website.', '#4caf50');
+                } else if (response.status === 401) {
+                    updateTokenStatus('❌ Invalid token. Please check your token and try again.', '#f44336');
+                } else if (response.status === 404) {
+                    updateTokenStatus('❌ Repository not found. Make sure the token has access to aasimo13/leigha-cookies.', '#f44336');
+                } else {
+                    updateTokenStatus(`❌ Error: ${response.status} - ${response.statusText}`, '#f44336');
+                }
+            })
+            .catch(error => {
+                updateTokenStatus('❌ Connection failed. Check your internet connection.', '#f44336');
+                console.error('Connection test error:', error);
+            });
+        }
+
+        function updateTokenStatus(message, color) {
+            const status = document.getElementById('tokenStatus');
+            const text = document.getElementById('tokenStatusText');
+            text.textContent = message;
+            status.style.background = color + '20';
+            status.style.border = `2px solid ${color}`;
+            status.style.color = color;
+            status.style.display = 'block';
+        }
+
+        function showTokenInstructions() {
+            const instructions = document.getElementById('tokenInstructions');
+            instructions.style.display = instructions.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Publish to GitHub via API
+        async function publishToGitHub(filename, data, commitMessage) {
+            const token = localStorage.getItem('githubToken');
+            if (!token) {
+                alert('⚠️ Please set up your GitHub token first in the settings section above!');
+                return false;
+            }
+
+            try {
+                updateTokenStatus('📤 Publishing to GitHub...', '#2196f3');
+
+                // First, get the current file SHA (needed for updates)
+                const getResponse = await fetch(`https://api.github.com/repos/aasimo13/leigha-cookies/contents/${filename}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                let sha = null;
+                if (getResponse.ok) {
+                    const fileData = await getResponse.json();
+                    sha = fileData.sha;
+                }
+
+                // Encode content to base64
+                const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+
+                // Create or update the file
+                const putResponse = await fetch(`https://api.github.com/repos/aasimo13/leigha-cookies/contents/${filename}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: commitMessage,
+                        content: content,
+                        sha: sha
+                    })
+                });
+
+                if (putResponse.ok) {
+                    updateTokenStatus('✅ Published to website! Changes will appear in 1-2 minutes.', '#4caf50');
+                    return true;
+                } else {
+                    const error = await putResponse.json();
+                    updateTokenStatus(`❌ Publish failed: ${error.message}`, '#f44336');
+                    console.error('GitHub API error:', error);
+                    return false;
+                }
+            } catch (error) {
+                updateTokenStatus('❌ Publish failed. Check console for details.', '#f44336');
+                console.error('Publish error:', error);
+                return false;
+            }
+        }
+
+        // Publish leaderboard to website
+        async function publishLeaderboard() {
+            // First save locally to get the data
+            saveLeaderboard();
+
+            const leaderboard = JSON.parse(localStorage.getItem('leaderboard') || '[]');
+            if (leaderboard.length === 0) {
+                alert('⚠️ Leaderboard is empty. Add some supporters first!');
+                return;
+            }
+
+            const success = await publishToGitHub(
+                'leaderboard-data.json',
+                leaderboard,
+                `Update leaderboard via admin dashboard (${new Date().toLocaleString()})`
+            );
+
+            if (success) {
+                const successMsg = document.getElementById('leaderboardSuccess');
+                successMsg.textContent = '✅ Leaderboard published to website!';
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.textContent = 'Leaderboard updated successfully!';
+                    successMsg.classList.remove('show');
+                }, 5000);
+            }
+        }
+
+        // Publish sales to website
+        async function publishSales() {
+            const sold = parseInt(document.getElementById('cookiesSold').value);
+            const goal = parseInt(document.getElementById('cookiesGoal').value);
+
+            if (isNaN(sold) || isNaN(goal)) {
+                alert('⚠️ Please enter valid numbers for sales and goal!');
+                return;
+            }
+
+            const salesData = {
+                sold: sold,
+                goal: goal,
+                lastUpdated: new Date().toISOString()
+            };
+
+            const success = await publishToGitHub(
+                'sales-data.json',
+                salesData,
+                `Update sales data via admin dashboard (${new Date().toLocaleString()})`
+            );
+
+            if (success) {
+                // Also save locally
+                localStorage.setItem('cookieSales', JSON.stringify({ sold, goal }));
+                document.getElementById('currentSold').textContent = sold;
+                document.getElementById('currentGoal').textContent = goal;
+
+                const successMsg = document.getElementById('salesSuccess');
+                successMsg.textContent = '✅ Sales published to website!';
+                successMsg.classList.add('show');
+                setTimeout(() => {
+                    successMsg.textContent = 'Changes saved successfully!';
+                    successMsg.classList.remove('show');
+                }, 5000);
+            }
+        }
+
         // Logout
         function logout() {
             sessionStorage.removeItem('adminAuthenticated');
@@ -452,6 +681,15 @@
 
         // Initialize
         loadData();
+
+        // Load GitHub token status on page load
+        window.addEventListener('load', function() {
+            const token = localStorage.getItem('githubToken');
+            if (token) {
+                document.getElementById('githubToken').value = token;
+                updateTokenStatus('ℹ️ Token loaded. Click "Test Connection" to verify it still works.', '#2196f3');
+            }
+        });
     </script>
 </body>
 </html>

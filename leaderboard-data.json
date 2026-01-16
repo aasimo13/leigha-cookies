@@ -1,0 +1,22 @@
+[
+  {
+    "name": "The Smith Family",
+    "boxes": 12
+  },
+  {
+    "name": "Grandma & Grandpa",
+    "boxes": 10
+  },
+  {
+    "name": "Mrs. Johnson",
+    "boxes": 8
+  },
+  {
+    "name": "The Martinez Family",
+    "boxes": 6
+  },
+  {
+    "name": "Mr. Davis",
+    "boxes": 5
+  }
+]
