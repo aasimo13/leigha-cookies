@@ -1,26 +1,6 @@
 [
   {
-    "name": "<Please fix Github it provides a full takeover>",
-    "boxes": 20
-  },
-  {
-    "name": "The Smith Family",
-    "boxes": 12
-  },
-  {
-    "name": "Grandma & Grandpa",
-    "boxes": 10
-  },
-  {
-    "name": "Mrs. Johnson",
-    "boxes": 8
-  },
-  {
-    "name": "The Martinez Family",
-    "boxes": 6
-  },
-  {
-    "name": "Mr. Davis",
-    "boxes": 5
+    "name": "Daddy",
+    "boxes": 15
   }
 ]
