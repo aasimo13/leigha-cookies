@@ -165,7 +165,13 @@
             const password = document.getElementById('password').value;
             const errorMessage = document.getElementById('errorMessage');
 
-            // Simple client-side authentication
+            // SECURITY NOTE: This login is COSMETIC ONLY.
+            // It runs entirely in the browser, so anyone can read this source and
+            // bypass it. It provides no real protection — the admin data is public
+            // anyway. The previous hardcoded password was removed from git history.
+            // The owner MUST set a new placeholder value below before using the
+            // admin page. Do NOT commit a real/reused personal password here; if you
+            // need genuine protection, move auth behind the Vercel serverless function.
             if (username === 'aaron' && password === 'PASSWORD_REMOVED_SET_A_NEW_ONE') {
                 // Set session flag
                 sessionStorage.setItem('adminAuthenticated', 'true');

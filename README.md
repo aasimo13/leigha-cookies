@@ -1,127 +1,78 @@
 # Leigha's Cookie HQ 🍪
 
-Enterprise-grade Girl Scout cookie storefront for Leigha.
+A small static website tracking Leigha's Girl Scout cookie fundraiser — a live
+sales goal tracker, a supporter leaderboard, and a link straight to her Digital
+Cookie store. Live at **[leighagrace.com](https://leighagrace.com)**.
 
-## Quick Start
+## What it does
 
-This site is hosted on GitHub Pages and uses a custom domain: **leighagrace.com**
+- 🎯 **Goal tracker** — shows cookies sold vs. the goal with an animated progress bar
+- 🏆 **Supporter leaderboard** — highlights top supporters, updated weekly
+- 🍪 **Cookie lineup** — the current Girl Scout cookie varieties with descriptions
+- 🤖 **Automatic hourly updates** — a GitHub Actions job scrapes the latest sales
+  count and commits it to `sales-data.json`
+- 🔒 **Hidden admin dashboard** — lets the owner edit the sales count and
+  leaderboard from the browser without touching code
+- 📱 Mobile responsive, with confetti celebrations and a floating-cookie hero
 
-## 🤖 Automated Updates (NEW!)
+## Tech stack
 
-**The site now updates automatically every hour!**
+- Pure HTML / CSS / JavaScript — no build tools required
+- **GitHub Pages** for hosting
+- **Cloudflare** for DNS and the `leighagrace.com` custom domain
+- A **Vercel** serverless function (`api/publish.js`) for publishing admin edits
+- **GitHub Actions** (`.github/workflows/update-sales.yml`) for the hourly scraper
 
-GitHub Actions runs a scraper every hour that:
-- ✅ Fetches current sales from Digital Cookie website
-- ✅ Updates `sales-data.json` in the repo
-- ✅ Automatically commits changes
-- ✅ Website loads the new data instantly
+## How it updates
 
-**You don't need to do anything!** Just watch the sales count update automatically.
+1. **Automatic:** GitHub Actions runs `scraper.js` every hour, pulls the current
+   sales total from the Digital Cookie site, and commits it to `sales-data.json`.
+   The site reads that file on load. See [AUTOMATED-UPDATES.md](AUTOMATED-UPDATES.md).
+2. **Manual (admin dashboard):** open the site, click the green heart 💚 in the
+   footer 5 times, and log in. From there you can update the sales count and the
+   leaderboard. Edits can be saved to the browser's `localStorage` or published
+   back to the repo. See [GITHUB-TOKEN-SETUP.md](GITHUB-TOKEN-SETUP.md) and
+   [VERCEL-SETUP.md](VERCEL-SETUP.md).
+3. **Manual (files):** edit `sales-data.json` or `leaderboard-data.json` directly
+   and push.
 
-📖 **[Read full documentation](AUTOMATED-UPDATES.md)** for details, manual triggering, and troubleshooting.
+The site loads data with this priority: published JSON files → `localStorage` →
+hardcoded defaults.
 
-## Admin Dashboard 🔒
+> ⚠️ **Admin login is cosmetic only.** The login check in `admin.html` runs
+> entirely in the browser, so it offers no real security — the underlying data is
+> public regardless. A previously hardcoded password was removed from the repo and
+> its git history; the file now ships with the placeholder
+> `PASSWORD_REMOVED_SET_A_NEW_ONE`, which the owner should replace. Do not store a
+> real or reused personal password in this file.
 
-**No more editing code!** Update everything through the admin dashboard.
-
-### How to Access Admin Panel
-
-1. Go to **leighagrace.com**
-2. Scroll to the bottom footer
-3. Click the green heart (💚) **5 times** quickly
-4. You'll be redirected to the login page
-5. Enter credentials:
-   - **Username:** `aaron`
-   - **Password:** `PASSWORD_REMOVED_SET_A_NEW_ONE`
-
-### What You Can Do in Admin
-
-- ✅ Update cookie sales count
-- ✅ Change cookie goal
-- ✅ Add/remove/edit leaderboard supporters
-- ✅ Changes save instantly to localStorage
-- ✅ Main site updates automatically (no git push needed!)
-
-### How It Works
-
-The admin dashboard uses **localStorage** to store data in the browser. When you update the sales or leaderboard in the admin panel, the main site reads from localStorage and displays the updated information immediately.
-
-**Note:** Data is stored per-browser. If you clear your browser data or switch browsers, you'll see the default values again.
-
-### Manual Updates (Old Method)
-
-If you prefer to edit code directly, you can still update `index.html` and push to GitHub, but the admin dashboard is much easier!
-
-## Auto-Update Tools 🤖
-
-Want to automatically sync sales from the Digital Cookie website? We've got you covered!
-
-### Option 1: One-Click Bookmarklet (Easiest!)
-
-Open `auto-update-bookmarklet.html` in your browser for detailed instructions. Quick version:
-
-1. Open the `auto-update-bookmarklet.html` page
-2. Drag the "Update Cookie Count" button to your bookmarks bar
-3. Visit the Digital Cookie page
-4. Click the bookmarklet - it automatically reads the sales and updates localStorage!
-
-### Option 2: Node.js Scraper Script
-
-For command-line enthusiasts:
+## Run locally
 
 ```bash
-# Run the scraper (just displays data)
+# View the site — just open the file (no server needed)
+open index.html
+
+# Run the sales scraper (prints current data)
 node scraper.js
 
-# Run and save to admin-data.json
+# Run the scraper and save the result to a JSON file
 node scraper.js --update
 ```
 
-The scraper fetches the current sales from the Digital Cookie website and displays it in your terminal. With `--update`, it saves the data to a JSON file that you can reference.
+The bookmarklet helper for syncing sales from the Digital Cookie page lives in
+`auto-update-bookmarklet.html`.
 
-### Option 3: Browser Console (Manual but Quick)
+## Custom domain
 
-1. Visit `digitalcookie.girlscouts.org/scout/leigha765749`
-2. Press F12 (open DevTools)
-3. Go to Console tab
-4. Run the script provided in `auto-update-bookmarklet.html`
+The site uses `leighagrace.com` via Cloudflare DNS pointing at GitHub Pages:
 
-See `auto-update-bookmarklet.html` for full details and code snippets!
+- **Type:** `CNAME`  **Name:** `@`  **Target:** `aasimo13.github.io`  **Proxy:** ON
+- The `CNAME` file in this repo contains `leighagrace.com`.
 
-## Features
+## Status
 
-- 🤖 **AUTOMATED HOURLY UPDATES** - Sales count auto-syncs via GitHub Actions!
-- ✅ **Secret admin dashboard** - Update sales and leaderboard without code
-- ✅ **Multiple update methods** - Auto-scraper, bookmarklet, or manual
-- ✅ **Weekly leaderboard** - Top supporters updated weekly
-- ✅ Animated hero section with floating cookies
-- ✅ Live goal tracker with progress bar
-- ✅ Cookie lineup with descriptions
-- ✅ Dynamic top supporters leaderboard
-- ✅ Confetti celebrations
-- ✅ Mobile responsive
-- ✅ Links directly to Digital Cookie store
-- ✅ Leigha's actual Girl Scout photo
-
-## Tech Stack
-
-- Pure HTML/CSS/JavaScript (no build tools required)
-- GitHub Pages for hosting
-- Cloudflare for DNS and custom domain
-
-## Custom Domain Setup
-
-The site uses `leighagrace.com` via Cloudflare DNS with these settings:
-
-**DNS Records:**
-- Type: `CNAME`
-- Name: `@`
-- Target: `yourusername.github.io`
-- Proxy: ON (orange cloud)
-
-**CNAME File:**
-The `CNAME` file in this repo contains: `leighagrace.com`
+Live and in active use at [leighagrace.com](https://leighagrace.com).
 
 ## License
 
-Built with 💚 and 🍪 for Leigha's Girl Scout journey.
+[MIT](LICENSE) — built with 💚 and 🍪 for Leigha's Girl Scout journey.

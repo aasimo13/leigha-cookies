@@ -50,9 +50,8 @@ No more manual file editing or git commands needed!
 
 2. Click the green heart 💚 **5 times** in the footer
 
-3. Login to admin dashboard:
-   - Username: `aaron`
-   - Password: `PASSWORD_REMOVED_SET_A_NEW_ONE`
+3. Log in to the admin dashboard with the admin credentials (the login is
+   client-side cosmetic only — the password is not documented here)
 
 4. Find the **"⚙️ GitHub Settings"** section at the top
 
